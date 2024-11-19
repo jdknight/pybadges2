@@ -1,63 +1,74 @@
-[![CircleCI](https://circleci.com/gh/google/pybadges.svg?style=svg)](https://circleci.com/gh/google/pybadges)
-![pypi](https://img.shields.io/pypi/v/pybadges.svg)
-![versions](https://img.shields.io/pypi/pyversions/pybadges.svg)
-   
-# pybadges
+[![pip Version](https://badgen.net/pypi/v/pybadges2?label=PyPI)](https://pypi.python.org/pypi/pybadges2)
+[![Supports Various Python versions](https://badgen.net/pypi/python/pybadges2?label=Python)](https://pypi.python.org/pypi/pybadges2)
+[![Build Status](https://github.com/jdknight/pybadges2/actions/workflows/build.yml/badge.svg)](https://github.com/jdknight/pybadges2/actions/workflows/build.yml)
 
-pybadges is a Python library and command line tool that allows you to create
+# pybadges2
+
+> [!IMPORTANT]
+> The pybadges2 is a new release (end of 2024) based on the original
+> [pybadges][pybadges] repository. The primarily goal is to support the
+> maintenace of this library/utility (since upstream maintenances appears
+> to have paused).
+
+pybadges2 is a Python library and command line tool that allows you to create
 Github-style badges as SVG images. For example:
 
-![pip installation](tests/golden-images/pip.svg)
-![pip installation](tests/golden-images/license.svg)
-![pip installation](tests/golden-images/build-passing.svg)
+<p align="center">
+    <img src="https://raw.githubusercontent.com/jdknight/pybadges2/refs/heads/main/tests/golden-images/pip.svg" />
+    <img src="https://raw.githubusercontent.com/jdknight/pybadges2/refs/heads/main/tests/golden-images/license.svg" />
+    <img src="https://raw.githubusercontent.com/jdknight/pybadges2/refs/heads/main/tests/golden-images/build-passing.svg" />
+</p>
 
-The aesthetics of the generated badges matches the  visual design found in this
-[specification](https://github.com/badges/shields/blob/master/spec/SPECIFICATION.md).
+The aesthetics of the generated badges matches the visual design found in this
+[specification][badges-shields-spec].
 
 The implementation of the library was heavily influenced by
-[Shields.io](https://github.com/badges/shields) and the JavaScript
-[badge-maker](https://github.com/badges/shields/tree/master/badge-maker#badge-maker) library.
+[Shields.io][shields-io] and the JavaScript [badge-maker][badge-maker] library.
 
 ## Getting Started
 
 ### Installing
 
-pybadges can be installed using [pip](https://pypi.org/project/pip/):
+pybadges can be installed using [pip][pip]:
 
 ```sh
 pip install pybadges
 ```
 
 To test that installation was successful, try:
+
 ```sh
 python -m pybadges --left-text=build --right-text=failure --right-color='#c00' --browser
 ```
 
 You will see a badge like this in your browser:
 
-![pip installation](tests/golden-images/build-failure.svg)
+![pip installation](https://raw.githubusercontent.com/jdknight/pybadges2/refs/heads/main/tests/golden-images/build-failure.svg)
 
 ## Usage
 
-pybadges can be used both from the command line and as a Python library.
+pybadges2 can be used both from the command line and as a Python library.
 
 The command line interface is a great way to experiment with the API before
 writing Python code.
 
-You could also look at the [example server](https://github.com/google/pybadges/tree/master/server-example).
+You could also look at the [example server](/server-example).
 
 ### Command line usage
 
-Complete documentation of pybadges command arguments can be found using the `--help`
-flag:
+Complete documentation of pybadges2 command arguments can be found using
+the `--help` flag:
 
 ```sh
-python -m pybadges --help
+pybadges2 --help
+ (or)
+python -m pybadges2 --help
 ```
 
 But the following usage demonstrates every interesting option:
+
 ```sh
-python -m pybadges \
+pybadges2 \
     --left-text=complete \
     --right-text=example \
     --left-color=green \
@@ -72,14 +83,14 @@ python -m pybadges \
     --browser
 ```
 
-![pip installation](tests/golden-images/complete.svg)
+![pip installation](https://raw.githubusercontent.com/jdknight/pybadges2/refs/heads/main/tests/golden-images/complete.svg)
 
 #### A note about `--logo` and `--embed-logo`
 
 Note that the `--logo` option can include a regular URL:
 
 ```sh
-python -m pybadges \
+pybadges2 \
     --left-text="python" \
     --right-text="3.2, 3.3, 3.4, 3.5, 3.6" \
     --whole-link="https://www.python.org/" \
@@ -87,33 +98,33 @@ python -m pybadges \
     --logo='https://dev.w3.org/SVG/tools/svgweb/samples/svg-files/python.svg'
 ```
 
-![pip installation](tests/golden-images/python.svg)
+![pip installation](https://raw.githubusercontent.com/jdknight/pybadges2/refs/heads/main/tests/golden-images/python.svg)
 
 If the `--logo` option is set, the `--embed-logo` option can also be set.
 The `--embed-logo` option causes the content of the URL provided in `--logo`
 to be embedded in the badge rather than be referenced through a link.
 
-The advantage of using this option is an extra HTTP request will not be required
-to render the badge and that some browsers will not load image references at all.
+The advantage of using this option is an extra HTTP request will not be
+required to render the badge and that some browsers will not load image
+references at all.
 
 You can see the difference in your browser:
 
-![--embed-logo=yes](tests/golden-images/embedded-logo.svg) ![--embed-logo=no](tests/golden-images/no-embedded-logo.svg)
+![--embed-logo=yes](https://raw.githubusercontent.com/jdknight/pybadges2/refs/heads/main/tests/golden-images/embedded-logo.svg)
+![--embed-logo=no](https://raw.githubusercontent.com/jdknight/pybadges2/refs/heads/main/tests/golden-images/no-embedded-logo.svg)
 
 #### A note about `--(whole|left|right)-title`
 
-The `title` element is usually displayed as a
-[pop-up by browsers](https://developer.mozilla.org/en-US/docs/Web/SVG/Element/title)
-but is currently
-[filtered by Github](https://github.com/github/markup/issues/1267).
-
+The `title` element is usually displayed as a [pop-up by browsers][svg-title]
+but is currently [filtered by Github][github-markup-issue-1267].
 
 ### Library usage
 
 pybadges is primarily meant to be used as a Python library.
 
 ```python
-from pybadges import badge
+from pybadges2 import badge
+
 s = badge(left_text='coverage', right_text='23%', right_color='red')
 # s is a string that contains the badge data as an svg image.
 print(s[:40]) # => <svg height="20" width="191.0" xmlns="ht
@@ -125,54 +136,51 @@ hyphen/minus (e.g. `--left-text` => `left_text=`)
 
 #### Server usage
 
-pybadges can be used to serve badge images on the web. 
+pybadges2 can be used to serve badge images on the web.
 
 [server-example](https://github.com/google/pybadges/tree/master/server-example)
-contains an example of serving badge images from a
-[Flask server](https://flask.palletsprojects.com/).
+contains an example of serving badge images from a [Flask server][flask].
 
 ### Caveats
 
- - pybadges uses a pre-calculated table of text widths and
-   [kerning](https://en.wikipedia.org/wiki/Kerning) distances
-   (for western glyphs) to determine the size of the badge.
-   So Eastern European languages may be rendered less well than
-   Western European ones:
+- pybadges2 uses a pre-calculated table of text widths and [kerning][kerning]
+  distances (for Western glyphs) to determine the size of the badge. Eastern
+  European languages may be rendered less well than Western European ones:
 
-   ![pip installation](tests/golden-images/saying-russian.svg)
+  ![pip installation](https://raw.githubusercontent.com/jdknight/pybadges2/refs/heads/main/tests/golden-images/saying-russian.svg)
 
-   and glyphs not present in Deja Vu Sans (the default font) may
-   be rendered very poorly:
+  And glyphs not present in Deja Vu Sans (the default font) may be rendered
+  very poorly:
 
-    ![pip installation](tests/golden-images/saying-chinese.svg)
+  ![pip installation](https://raw.githubusercontent.com/jdknight/pybadges2/refs/heads/main/tests/golden-images/saying-chinese.svg)
 
- - pybadges does not have any explicit support for languages that
-   are written right-to-left (e.g. Arabic, Hebrew) and the displayed
-   text direction may be incorrect:
+- pybadges2 does not have any explicit support for languages that are
+  written right-to-left (e.g. Arabic, Hebrew) and the displayed text
+  direction may be incorrect:
 
-    ![pip installation](tests/golden-images/saying-arabic.svg)
+  ![pip installation](https://raw.githubusercontent.com/jdknight/pybadges2/refs/heads/main/tests/golden-images/saying-arabic.svg)
 
 ## Development
 
+Testing can be performed using [tox][tox]:
+
 ```sh
-git clone https://github.com/google/pybadges.git
-cd pybadges
-python -m virtualenv venv
-source venv/bin/activate
-# Installs in edit mode and with development dependencies.
-pip install -e .[dev]
-nox
+git clone https://github.com/jdknight/pybadges2.git
+cd pybadges2
+tox
 ```
 
-If you'd like to contribute your changes back to pybadges, please read the
-[contributor guide.](CONTRIBUTING.md)
+Users wishing to contribute, please read the
+[contributor guide](CONTRIBUTING.md).
 
-## Versioning
 
-We use [SemVer](http://semver.org/) for versioning.
-
-## License
-
-This project is licensed under the Apache License - see the [LICENSE](LICENSE) file for details
-
-This is not an officially supported Google product.
+[badge-maker]: https://github.com/badges/shields/tree/master/badge-maker#badge-maker
+[badges-shields-spec]: https://github.com/badges/shields/blob/master/spec/SPECIFICATION.md
+[flask]: https://flask.palletsprojects.com/
+[github-markup-issue-1267]: https://github.com/github/markup/issues/1267
+[kerning]: https://ewikipedia.org/wiki/Kerning
+[pip]: https://pypi.org/project/pip/
+[pybadges]: https://github.com/google/pybadges/issues
+[shields-io]: https://github.com/badges/shields
+[svg-title]: https://developer.mozilla.org/en-US/docs/Web/SVG/Element/title
+[tox]: https://tox.wiki/
