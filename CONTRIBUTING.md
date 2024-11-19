@@ -1,35 +1,48 @@
-# How to Contribute
+# Contributing
 
-We'd love to accept your patches and contributions to this project. There are
-just a few small guidelines you need to follow.
+Contributions to this repository are welcome and much appreciated.
 
-## Contributor License Agreement
+## Submitting changes
 
-Contributions to this project must be accompanied by a Contributor License
-Agreement. You (or your employer) retain the copyright to your contribution;
-this simply gives us permission to use and redistribute your contributions as
-part of the project. Head over to <https://cla.developers.google.com/> to see
-your current agreements on file or to sign a new one.
+Contributions can be provided as [pull requests][prs] to this extension's
+GitHub project. New contributors should familiarize themselves with the
+following:
 
-You generally only need to submit a CLA once, so if you've already submitted one
-(even if it was for a different project), you probably don't need to do it
-again.
+- **(required)** Sign your work ([Developer’s Certificate of Origin][dcod]).
+  This is confirmed with the inclusion of `Signed-off-by` in submitted
+  commit messages.
+- Builds are required\* to pass to be accepted (\* with some exceptions
+  in very specific scenarios). When a pull request is submitted, continuous
+  integration tests will be invoked. A developer can invoke `tox` at the
+  root of the checked out repository to validate changes before submitting
+  a pull request.
+- Keep a narrow scope for proposed changes. Submitting multiple feature
+  changes in a single pull request is not always helpful. Use multiple
+  commits to separate changes over stacking all changes in a single commit
+  (for example, related implementation and documentation changes can be
+  submitted in a single pull request, but are best presented in their own
+  individual commits).
+- Add unit tests (if applicable). Adding unit tests to validate new changes
+  helps build confidence for the new modifications and helps prevent future
+  changes from breaking the new feature/fix.
 
-## Code reviews
+While maintainers will help strive to review, merge changes and provide
+support (when possible), the process may take some time. Please be patient
+and happy coding.
 
-All submissions, including submissions by project members, require review. We
-use GitHub pull requests for this purpose. Consult
-[GitHub Help](https://help.github.com/articles/about-pull-requests/) for more
-information on using pull requests.
+## Guidelines
 
-Please run the nox tests before sending your code for review. You can do that
-with:
-```sh
-pip install .[dev]
-nox
-```
+A goal of this utility is to include support for all stable Python
+interpreters that have yet to be marked as [end-of-life][python-eol].
 
-## Community Guidelines
+[PEP 8][pep8] is a standard styling guide for Python projects and is
+recommended for consideration when making contributions. Default linters
+configured in tox are required to pass. Note that select exceptions may
+be used.
 
-This project follows [Google's Open Source Community
-Guidelines](https://opensource.google.com/conduct/).
+
+[dcod]: https://developercertificate.org/
+[issues]: https://github.com/jdknight/pybadges2/issues
+[pep8]: https://peps.python.org/pep-0008/
+[prs]: https://github.com/jdknight/pybadges2/pulls
+[python-eol]: https://devguide.python.org/versions/
