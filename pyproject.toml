@@ -1,0 +1,67 @@
+[build-system]
+requires = [
+    'flit_core>=3.7',
+]
+build-backend = 'flit_core.buildapi'
+
+[project]
+name = 'pybadges2'
+description = 'Library and command-line tool for generating GitHub-style badges'
+keywords = [
+    'badge',
+    'gh-badges',
+    'github',
+    'shield',
+    'status',
+]
+authors = [
+    {name = 'Brian Quinlan', email = 'brian@sweetapp.com'},
+]
+maintainers = [
+    {name = 'James Knight', email = 'git@jdknight.me'},
+]
+requires-python = '>=3.9'
+readme = 'README.md'
+classifiers = [
+    'Development Status :: 5 - Production/Stable',
+    'Intended Audience :: Developers',
+    'License :: OSI Approved :: Apache Software License',
+    'License :: OSI Approved :: BSD License',
+    'Operating System :: OS Independent',
+    'Programming Language :: Python :: 3 :: Only',
+    'Programming Language :: Python :: 3',
+    'Programming Language :: Python :: 3.9',
+    'Programming Language :: Python :: 3.10',
+    'Programming Language :: Python :: 3.11',
+    'Programming Language :: Python :: 3.12',
+    'Programming Language :: Python :: 3.13',
+    'Programming Language :: Python',
+]
+dependencies = [
+    'Jinja2',
+    'requests',
+]
+dynamic = [
+    'version',
+]
+
+[project.urls]
+Download = 'https://pypi.python.org/pypi/pybadges2'
+Source = 'https://github.com/jdknight/pybadges2'
+
+[project.scripts]
+pybadges2 = 'pybadges2.__main__:main'
+
+[tool.flit.sdist]
+include = [
+    'LICENSE',
+    'LICENSES',
+    'README.md',
+    'server-example',
+    'support',
+    'tests',
+]
+
+exclude = [
+    'server-example/venv',
+]
