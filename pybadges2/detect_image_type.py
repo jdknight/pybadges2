@@ -34,7 +34,7 @@ def detect_image_type(data) -> str:
 
     # WebP
     # https://wikipedia.org/wiki/WebP#Technology
-    if data.startswith(b'RIFF') and header[8:12] == b'WEBP':
+    if data.startswith(b'RIFF') and data[8:12] == b'WEBP':
         return 'webp'
 
-    raise None
+    return None
