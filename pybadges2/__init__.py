@@ -1,4 +1,5 @@
 # Copyright 2018 The pybadge Authors
+# Copyright pybadge2 Authors
 # SPDX-License-Identifier: Apache-2.0
 """Creates a github-style badge as a SVG image.
 

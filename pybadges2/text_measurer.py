@@ -1,4 +1,5 @@
 # Copyright 2018 The pybadge Authors
+# Copyright pybadge2 Authors
 # SPDX-License-Identifier: Apache-2.0
 """Measure the width, in pixels, of a  string rendered using DejaVu Sans 110pt.
 

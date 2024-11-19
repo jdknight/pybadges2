@@ -2,6 +2,7 @@
 # SPDX-License-Identifier: Apache-2.0
 """Tests for pybadges2."""
 
+from pathlib import Path
 from tests import image_server
 import base64
 import doctest
