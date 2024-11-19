@@ -66,4 +66,4 @@ def type_check(session):
     session.install('-e', '.[dev]')
     session.install('pytype')
     session.run('pytype', '--python-version=3.7', '--disable=pyi-error',
-                'pybadges')
+                'pybadges2')

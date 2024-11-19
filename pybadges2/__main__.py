@@ -14,7 +14,7 @@
 """Output a github-style badge as an SVG image given some text and colors.
 
 For more information, run:
-$ python3 -m pybadges --help
+$ python3 -m pybadges2 --help
 """
 
 import argparse
@@ -22,14 +22,14 @@ import sys
 import tempfile
 import webbrowser
 
-sys.path.append('/home/nick/git/pybadges/')
-import pybadges
-from pybadges.version import __version__
+sys.path.append('/home/nick/git/pybadges2/')
+import pybadges2
+from pybadges2.version import __version__
 
 
 def main():
     parser = argparse.ArgumentParser(
-        'pybadges',
+        'pybadges2',
         description='generate a github-style badge given some text and colors')
 
     parser.add_argument(
@@ -172,10 +172,10 @@ def main():
                   '--deja-vu-sans-path',
                   file=sys.stderr)
             sys.exit(1)
-        from pybadges import pil_text_measurer
+        from pybadges2 import pil_text_measurer
         measurer = pil_text_measurer.PilMeasurer(args.deja_vu_sans_path)
 
-    badge = pybadges.badge(left_text=args.left_text,
+    badge = pybadges2.badge(left_text=args.left_text,
                            right_text=args.right_text,
                            left_link=args.left_link,
                            right_link=args.right_link,

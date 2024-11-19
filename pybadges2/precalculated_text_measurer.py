@@ -21,7 +21,7 @@ import json
 import pkg_resources
 from typing import cast, Mapping, TextIO, Type
 
-from pybadges import text_measurer
+from pybadges2 import text_measurer
 
 
 class PrecalculatedTextMeasurer(text_measurer.TextMeasurer):

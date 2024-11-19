@@ -15,7 +15,7 @@
 
 import unittest
 
-from pybadges import precalculated_text_measurer
+from pybadges2 import precalculated_text_measurer
 
 
 class TestPrecalculatedTextMeasurer(unittest.TestCase):

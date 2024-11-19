@@ -18,7 +18,7 @@ Uses a PIL/Pillow to determine the string length.
 
 from PIL import ImageFont
 
-from pybadges import text_measurer
+from pybadges2 import text_measurer
 
 
 class PilMeasurer(text_measurer.TextMeasurer):

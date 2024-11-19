@@ -20,7 +20,7 @@ import os
 import os.path
 import pkg_resources
 
-import pybadges
+import pybadges2
 from tests import image_server
 from tests import test_pybadges
 
