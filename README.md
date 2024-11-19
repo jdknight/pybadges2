@@ -178,7 +178,7 @@ Users wishing to contribute, please read the
 [badges-shields-spec]: https://github.com/badges/shields/blob/master/spec/SPECIFICATION.md
 [flask]: https://flask.palletsprojects.com/
 [github-markup-issue-1267]: https://github.com/github/markup/issues/1267
-[kerning]: https://ewikipedia.org/wiki/Kerning
+[kerning]: https://wikipedia.org/wiki/Kerning
 [pip]: https://pypi.org/project/pip/
 [pybadges]: https://github.com/google/pybadges/issues
 [shields-io]: https://github.com/badges/shields
