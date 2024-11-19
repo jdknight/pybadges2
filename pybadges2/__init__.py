@@ -27,6 +27,7 @@ from pathlib import Path
 from pybadges2 import precalculated_text_measurer
 from pybadges2 import text_measurer
 from pybadges2.detect_image_type import detect_image_type
+from pybadges2.util import name2color
 from pybadges2.version import __version__  # noqa: F401
 from xml.dom import minidom
 import base64
@@ -40,29 +41,6 @@ _JINJA2_ENVIRONMENT = jinja2.Environment(
     lstrip_blocks=True,
     loader=jinja2.PackageLoader('pybadges2', '.'),
     autoescape=jinja2.select_autoescape(['svg']))
-
-# Use the same color scheme as describe in:
-# https://github.com/badges/shields/blob/master/lib/colorscheme.json
-
-_NAME_TO_COLOR = {
-    'brightgreen': '#4c1',
-    'green': '#97CA00',
-    'yellow': '#dfb317',
-    'yellowgreen': '#a4a61d',
-    'orange': '#fe7d37',
-    'red': '#e05d44',
-    'blue': '#007ec6',
-    'grey': '#555',
-    'gray': '#555',
-    'lightgrey': '#9f9f9f',
-    'lightgray': '#9f9f9f',
-    'critical': '#e05d44',
-    'important': '#fe7d37',
-    'success': '#4c1',
-    'informational': '#007ec6',
-    'inactive': '#9f9f9f',
-}
-
 
 
 def _remove_blanks(node: minidom.Node) -> None:
@@ -217,7 +195,7 @@ def badge(
         center_image = _embed_image(center_image)
 
     if center_color:
-        center_color = _NAME_TO_COLOR.get(center_color, center_color)
+        center_color = name2color(center_color)
 
     right_text_width = None
     if right_text:
@@ -235,8 +213,8 @@ def badge(
         whole_link=whole_link,
         center_link=center_link,
         logo=logo,
-        left_color=_NAME_TO_COLOR.get(left_color, left_color),
-        right_color=_NAME_TO_COLOR.get(right_color, right_color),
+        left_color=name2color(left_color),
+        right_color=name2color(right_color),
         center_color=center_color,
         left_title=left_title,
         right_title=right_title,
