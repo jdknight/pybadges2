@@ -1,0 +1,24 @@
+lint.select = [
+    'ALL',
+]
+
+lint.ignore = [
+    # ignore pydocstyle
+    'D',
+    # imports are grouped/sorted in this project
+    'FBT002',
+    'I001',
+    # ignore "too many" warnings
+    'PLR0911',
+    'PLR0912',
+    'PLR0913',
+    'PLR0915',
+    # single quotes are preferred in this project
+    'Q000',
+    'Q001',
+]
+
+[lint.per-file-ignores]
+'pybadges2/__main__.py' = [
+    'T201',
+]
