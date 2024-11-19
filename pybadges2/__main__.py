@@ -6,7 +6,9 @@ For more information, run:
 $ python3 -m pybadges2 --help
 """
 
+from pathlib import Path
 from pybadges2 import pil_text_measurer
+from pybadges2.badge import badge
 from pybadges2.version import __version__
 import argparse
 import sys
@@ -14,7 +16,7 @@ import tempfile
 import webbrowser
 
 
-def main():
+def main() -> None:
     parser = argparse.ArgumentParser(
         'pybadges2',
         description='generate a github-style badge given some text and colors')
@@ -30,17 +32,17 @@ def main():
     parser.add_argument(
         '--left-link',
         default=None,
-        help='the url to redirect to when the left-hand of the badge is ' +
+        help='the url to redirect to when the left-hand of the badge is '
         'clicked')
     parser.add_argument(
         '--right-link',
         default=None,
-        help='the url to redirect to when the right-hand of the badge is ' +
+        help='the url to redirect to when the right-hand of the badge is '
         'clicked')
     parser.add_argument(
         '--center-link',
         default=None,
-        help='the url to redirect to when the center of the badge is ' +
+        help='the url to redirect to when the center of the badge is '
         'clicked')
     parser.add_argument('--whole-link',
                         default=None,
@@ -70,13 +72,13 @@ def main():
         action='store_true',
         default=False,
         help='use the PilMeasurer to measure the length of text (kerning may '
-        'be more precise for non-Western languages. ' +
+        'be more precise for non-Western languages. '
         '--deja-vu-sans-path must also be set.')
     parser.add_argument(
         '--deja-vu-sans-path',
         default=None,
-        help='the path to the ttf font file containing DejaVu Sans. If not ' +
-        'present on your system, you can download it from ' +
+        help='the path to the ttf font file containing DejaVu Sans. If not '
+        'present on your system, you can download it from '
         'https://www.fontsquirrel.com/fonts/dejavu-sans')
     parser.add_argument(
         '--left-title',
@@ -142,12 +144,12 @@ def main():
         '-v',
         '--version',
         action='version',
-        version='%(prog)s {version}'.format(version=__version__))
+        version=f'%(prog)s {__version__}')
     args = parser.parse_args()
 
     if (args.left_link or args.right_link or
             args.center_link) and args.whole_link:
-        print('argument --whole-link: cannot be set with ' +
+        print('argument --whole-link: cannot be set with '
               '--left-link, --right-link, or --center_link',
               file=sys.stderr)
         sys.exit(1)
@@ -155,41 +157,43 @@ def main():
     measurer = None
     if args.use_pil_text_measurer:
         if args.deja_vu_sans_path is None:
-            print('argument --use-pil-text-measurer: must also set ' +
+            print('argument --use-pil-text-measurer: must also set '
                   '--deja-vu-sans-path',
                   file=sys.stderr)
             sys.exit(1)
         measurer = pil_text_measurer.PilMeasurer(args.deja_vu_sans_path)
 
-    badge = pybadges2.badge(left_text=args.left_text,
-                           right_text=args.right_text,
-                           left_link=args.left_link,
-                           right_link=args.right_link,
-                           center_link=args.center_link,
-                           whole_link=args.whole_link,
-                           logo=args.logo,
-                           left_color=args.left_color,
-                           right_color=args.right_color,
-                           center_color=args.center_color,
-                           measurer=measurer,
-                           left_title=args.left_title,
-                           right_title=args.right_title,
-                           center_title=args.center_title,
-                           whole_title=args.whole_title,
-                           right_image=args.right_image,
-                           center_image=args.center_image,
-                           embed_logo=args.embed_logo,
-                           embed_right_image=args.embed_right_image,
-                           embed_center_image=args.embed_center_image)
+    generated_badge = badge(
+        left_text=args.left_text,
+        right_text=args.right_text,
+        left_link=args.left_link,
+        right_link=args.right_link,
+        center_link=args.center_link,
+        whole_link=args.whole_link,
+        logo=args.logo,
+        left_color=args.left_color,
+        right_color=args.right_color,
+        center_color=args.center_color,
+        measurer=measurer,
+        left_title=args.left_title,
+        right_title=args.right_title,
+        center_title=args.center_title,
+        whole_title=args.whole_title,
+        right_image=args.right_image,
+        center_image=args.center_image,
+        embed_logo=args.embed_logo,
+        embed_right_image=args.embed_right_image,
+        embed_center_image=args.embed_center_image,
+    )
 
     if args.browser:
         _, badge_path = tempfile.mkstemp(suffix='.svg')
-        with open(badge_path, 'w') as f:
-            f.write(badge)
+        with Path(badge_path).open('w') as f:
+            f.write(generated_badge)
 
         webbrowser.open_new_tab('file://' + badge_path)
     else:
-        print(badge, end='')
+        print(generated_badge, end='')
 
 
 main()

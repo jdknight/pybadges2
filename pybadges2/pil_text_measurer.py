@@ -12,7 +12,7 @@ from pybadges2 import text_measurer
 class PilMeasurer(text_measurer.TextMeasurer):
     """Measures the width of a string using PIL/Pillow."""
 
-    def __init__(self, deja_vu_sans_path: str):
+    def __init__(self, deja_vu_sans_path: str) -> None:
         """Initializer for PilMeasurer.
 
         Args:

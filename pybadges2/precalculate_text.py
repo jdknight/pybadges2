@@ -30,6 +30,7 @@ $ python3 - m pybadges2.precalculate_text --help
 """
 
 from fontTools import ttLib
+from oathlib import Path
 from pybadges2 import pil_text_measurer
 from pybadges2 import text_measurer
 from typing import Iterable
@@ -38,7 +39,7 @@ from typing import TextIO
 import argparse
 import itertools
 import json
-import os.path
+import lzma
 import statistics
 
 
@@ -68,7 +69,7 @@ def generate_encodeable_characters(characters: Iterable[str],
             try:
                 c.encode(encoding)
                 yield c
-            except UnicodeEncodeError:
+            except UnicodeEncodeError:  # noqa: PERF203
                 pass
 
 
@@ -143,47 +144,51 @@ def write_json(f: TextIO, deja_vu_sans_path: str,
             'mean-character-length': statistics.mean(char_to_length.values()),
             'character-lengths': char_to_length,
             'kerning-characters': kerning_characters,
-            'kerning-pairs': pair_to_kerning
+            'kerning-pairs': pair_to_kerning,
         },
         f,
         sort_keys=True,
         indent=1)
 
 
-def main():
+def main() -> None:
     parser = argparse.ArgumentParser(
-        description='generate a github-style badge given some text and colors')
+        description='Generate a GiHub-style badge given some text and colors')
 
     parser.add_argument(
         '--deja-vu-sans-path',
         required=True,
-        help='the path to the ttf font file containing DejaVu Sans. If not ' +
-        'present on your system, you can download it from ' +
-        'https://www.fontsquirrel.com/fonts/dejavu-sans')
+        help=(
+            'The path to the ttf font file containing DejaVu Sans. If not '
+            'present on your system, you can download it from '
+            'https://www.fontsquirrel.com/fonts/dejavu-sans.'
+        ))
 
     parser.add_argument(
         '--kerning-pair-encodings',
         action='append',
         default=['cp1252'],
-        help='only include kerning pairs for the given encodings')
+        help='Only include kerning pairs for the given encodings.')
 
     parser.add_argument(
         '--output-json-file',
-        default=os.path.join(os.path.dirname(__file__), 'default-widths.json'),
-        help='the path where the generated JSON will be placed. If the ' +
-        'provided filename extension ends with .xz then the output' +
-        'will be compressed using lzma.')
+        type=Path,
+        default=Path(__file__).parent / 'default-widths.json',
+        help=(
+            'The path where the generated JSON will be placed. If the '
+            'provided filename extension ends with .xz then the output '
+            'will be compressed using lzma.'
+        ))
 
     args = parser.parse_args()
 
     measurer = pil_text_measurer.PilMeasurer(args.deja_vu_sans_path)
 
-    def create_file():
+    def create_file() -> TextIO:
         if args.output_json_file.endswith('.xz'):
-            import lzma
             return lzma.open(args.output_json_file, 'wt')
-        else:
-            return open(args.output_json_file, 'wt')
+
+        return args.output_json_file.open('wt')
 
     with create_file() as f:
         write_json(f, args.deja_vu_sans_path, measurer,

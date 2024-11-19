@@ -20,7 +20,7 @@ class PrecalculatedTextMeasurer(text_measurer.TextMeasurer):
 
     def __init__(self, default_character_width: float,
                  char_to_width: Mapping[str, float],
-                 pair_to_kern: Mapping[str, float]):
+                 pair_to_kern: Mapping[str, float]) -> None:
         """Initializer for PrecalculatedTextMeasurer.
 
         Args:
@@ -67,10 +67,9 @@ class PrecalculatedTextMeasurer(text_measurer.TextMeasurer):
 
         default_widths_xz = module_dir / 'default-widths.json.xz'
         if default_widths_xz.is_file():
-            with default_widths_xz.open('rb') as f:
-                with lzma.open(f, 'rt') as g:
-                    cls._default_cache = PrecalculatedTextMeasurer.from_json(g)
-                    return cls._default_cache
+            with default_widths_xz.open('rb') as f, lzma.open(f, 'rt') as g:
+                cls._default_cache = PrecalculatedTextMeasurer.from_json(g)
+                return cls._default_cache
         else:
             default_widths = module_dir / 'default-widths.json'
             with default_widths.open(encoding='utf-8') as f:

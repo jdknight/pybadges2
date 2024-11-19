@@ -1,7 +1,10 @@
 # Copyright 2023 by the Sphinx team (sphinx-doc/sphinx). All rights reserved.
 # SPDX-License-Identifier: BSD-2-Clause
 
-def detect_image_type(data) -> str:
+from __future__ import annotations
+
+
+def detect_image_type(data: bytes) -> str | None:
     # Bitmap
     # https://wikipedia.org/wiki/BMP_file_format#Bitmap_file_header
     if data.startswith(b'BM'):

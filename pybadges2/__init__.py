@@ -18,11 +18,12 @@ gh-badges library
 '<svg...</svg>'
 """
 
+from __future__ import annotations
+from pathlib import Path
 from pybadges2 import precalculated_text_measurer
 from pybadges2 import text_measurer
 from pybadges2.detect_image_type import detect_image_type
 from pybadges2.version import __version__
-from typing import Optional
 from xml.dom import minidom
 import base64
 import jinja2
@@ -59,7 +60,7 @@ _NAME_TO_COLOR = {
 }
 
 
-def _remove_blanks(node):
+def _remove_blanks(node) -> None:
     for x in node.childNodes:
         if x.nodeType == minidom.Node.TEXT_NODE:
             if x.nodeValue:
@@ -73,8 +74,10 @@ def _embed_image(url: str) -> str:
 
     if parsed_url.scheme == 'data':
         return url
-    elif parsed_url.scheme.startswith('http'):
-        r = requests.get(url)
+
+    if parsed_url.scheme.startswith('http'):
+        interim_timeout = 60
+        r = requests.get(url, timeout=interim_timeout)
         r.raise_for_status()
         content_type = r.headers.get('content-type')
         if content_type is None:
@@ -89,7 +92,7 @@ def _embed_image(url: str) -> str:
         msg = f'unsupported scheme "{parsed_url.scheme}"'
         raise ValueError(msg)
     else:
-        with open(url, 'rb') as f:
+        with Path(url).open('rb') as f:
             image_data = f.read()
         image_type = detect_image_type(image_data)
         if not image_type:
@@ -97,35 +100,36 @@ def _embed_image(url: str) -> str:
             if not mime_type:
                 msg = 'not able to determine file type'
                 raise ValueError(msg)
-            else:
-                content_type, image_type = mime_type.split('/')
-                if content_type != 'image':
-                    desc = content_type or 'unknown'
-                    msg = f'expected an image, got "{desc}"'
-                    raise ValueError(msg)
+
+            content_type, image_type = mime_type.split('/')
+            if content_type != 'image':
+                desc = content_type or 'unknown'
+                msg = f'expected an image, got "{desc}"'
+                raise ValueError(msg)
 
     encoded_image = base64.b64encode(image_data).decode('ascii')
-    return 'data:image/{};base64,{}'.format(image_type, encoded_image)
+    return f'data:image/{image_type};base64,{encoded_image}'
 
 
 def badge(
     left_text: str,
-    right_text: Optional[str] = None,
-    left_link: Optional[str] = None,
-    right_link: Optional[str] = None,
-    center_link: Optional[str] = None,
-    whole_link: Optional[str] = None,
-    logo: Optional[str] = None,
+    *,
+    right_text: str | None = None,
+    left_link: str | None = None,
+    right_link: str | None = None,
+    center_link: str | None = None,
+    whole_link: str | None = None,
+    logo: str | None = None,
     left_color: str = '#555',
     right_color: str = '#007ec6',
-    center_color: Optional[str] = None,
-    measurer: Optional[text_measurer.TextMeasurer] = None,
-    left_title: Optional[str] = None,
-    right_title: Optional[str] = None,
-    center_title: Optional[str] = None,
-    whole_title: Optional[str] = None,
-    right_image: Optional[str] = None,
-    center_image: Optional[str] = None,
+    center_color: str | None = None,
+    measurer: text_measurer.TextMeasurer | None = None,
+    left_title: str | None = None,
+    right_title: str | None = None,
+    center_title: str | None = None,
+    whole_title: str | None = None,
+    right_image: str | None = None,
+    center_image: str | None = None,
     embed_logo: bool = False,
     embed_right_image: bool = False,
     embed_center_image: bool = False,
@@ -237,7 +241,7 @@ def badge(
         center_image=center_image,
         id_suffix=id_suffix,
     )
-    xml = minidom.parseString(svg)
+    xml = minidom.parseString(svg)  # noqa: S318
     _remove_blanks(xml)
     xml.normalize()
     return xml.documentElement.toxml()
