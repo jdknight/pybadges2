@@ -19,7 +19,6 @@ gh-badges library
 """
 
 import base64
-import imghdr
 import mimetypes
 from typing import Optional
 import urllib.parse
@@ -28,6 +27,7 @@ from xml.dom import minidom
 import jinja2
 import requests
 
+from pybadges2.detect_image_type import detect_image_type
 from pybadges2 import text_measurer
 from pybadges2 import precalculated_text_measurer
 from pybadges2.version import __version__
@@ -91,7 +91,7 @@ def _embed_image(url: str) -> str:
     else:
         with open(url, 'rb') as f:
             image_data = f.read()
-        image_type = imghdr.what(None, image_data)
+        image_type = detect_image_type(image_data)
         if not image_type:
             mime_type, _ = mimetypes.guess_type(url, strict=False)
             if not mime_type:
