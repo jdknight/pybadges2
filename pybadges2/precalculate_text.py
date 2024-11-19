@@ -31,7 +31,7 @@ $ python3 - m pybadges2.precalculate_text --help
 """
 
 from fontTools import ttLib
-from oathlib import Path
+from pathlib import Path
 from pybadges2 import pil_text_measurer
 from pybadges2 import text_measurer
 from typing import Iterable
@@ -123,7 +123,7 @@ def calculate_pair_to_kern_mapping(measurer: text_measurer.TextMeasurer,
         kerned_width = measurer.text_width(a + b)
         unkerned_width = char_to_length[a] + char_to_length[b]
         kerning = unkerned_width - kerned_width
-        if abs(kerning) > 0.05:
+        if abs(kerning) > 0.05:  # noqa: PLR2004
             pair_to_kerning[a + b] = round(kerning, 3)
     return pair_to_kerning
 

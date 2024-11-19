@@ -8,8 +8,8 @@ $ python3 -m pybadges2 --help
 """
 
 from pathlib import Path
+from pybadges2 import badge
 from pybadges2 import pil_text_measurer
-from pybadges2.badge import badge
 from pybadges2.version import __version__
 import argparse
 import sys

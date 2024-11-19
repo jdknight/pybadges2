@@ -13,7 +13,10 @@ gh-badges library
 ...       whole_link="http://www.example.com/")
 '<svg...</svg>'
 >>> # base64-encoded PNG image
->>> image_data = 'iVBORw0KGgoAAAANSUhEUgAAAAIAAAACCAIAAAD91JpzAAAAD0lEQVQI12P4zwAD/xkYAA/+Af8iHnLUAAAAAElFTkSuQmCC'
+>>> image_data = (
+>>>     'iVBORw0KGgoAAAANSUhEUgAAAAIAAAACCAIAAAD91JpzAAAAD0lEQVQI12P4zw'
+>>>     'AD/xkYAA/+Af8iHnLUAAAAAElFTkSuQmCC'
+>>> )
 >>> badge(left_text='build', right_text='green', right_color='green',
 ...       logo="data:image/png;base64," + image_data)
 '<svg...</svg>'
@@ -24,7 +27,7 @@ from pathlib import Path
 from pybadges2 import precalculated_text_measurer
 from pybadges2 import text_measurer
 from pybadges2.detect_image_type import detect_image_type
-from pybadges2.version import __version__
+from pybadges2.version import __version__  # noqa: F401
 from xml.dom import minidom
 import base64
 import jinja2
@@ -61,7 +64,8 @@ _NAME_TO_COLOR = {
 }
 
 
-def _remove_blanks(node) -> None:
+
+def _remove_blanks(node: minidom.Node) -> None:
     for x in node.childNodes:
         if x.nodeType == minidom.Node.TEXT_NODE:
             if x.nodeValue:
