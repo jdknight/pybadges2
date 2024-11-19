@@ -1,4 +1,5 @@
 # Copyright 2018 The pybadge Authors
+# Copyright pybadge2 Authors
 # SPDX-License-Identifier: Apache-2.0
 """Tests for pybadges2."""
 
@@ -15,8 +16,6 @@ import tempfile
 import unittest
 import xmldiff.main
 
-TEST_DIR = os.path.dirname(__file__)
-
 PNG_IMAGE_B64 = (
     'iVBORw0KGgoAAAANSUhEUgAAAAIAAAACCAIAAAD91JpzAAAAD0lEQVQI12P4zw'
     'AD/xkYAA/+Af8iHnLUAAAAAElFTkSuQmCC')
@@ -25,6 +24,11 @@ PNG_IMAGE = base64.b64decode(PNG_IMAGE_B64)
 
 class TestPybadges2Badge(unittest.TestCase):
     """Tests for pybadges2.badge."""
+
+    @classmethod
+    def setUpClass(cls: type[unittest.TestCase]) -> None:
+        test_dir = Path(__file__).parent
+        cls.dataset = test_dir / 'assets'
 
     def setUp(self):
         super().setUp()
@@ -46,17 +50,20 @@ class TestPybadges2Badge(unittest.TestCase):
                            whole_link='http://example.com/')
 
     def test_changes(self):
-        with open(os.path.join(TEST_DIR, 'test-badges.json'), 'r') as f:
+        test_badges = self.dataset / 'test-badges.json'
+
+        with test_badges.open() as f:
             examples = json.load(f)
 
         for example in examples:
             self._image_server.fix_embedded_url_reference(example)
             file_name = example.pop('file_name')
             with self.subTest(example=file_name):
-                goldenpath = os.path.join(TEST_DIR, 'golden-images', file_name)
+                example_img = self.dataset / 'golden-images' / file_name
 
-                with open(goldenpath, mode="r", encoding="utf-8") as f:
+                with example_img.open(encoding='utf-8') as f:
                     golden_image = f.read()
+
                 pybadge_image = pybadges2.badge(**example)
 
                 diff = xmldiff.main.diff_texts(golden_image, pybadge_image)
@@ -76,7 +83,7 @@ class TestPybadges2Badge(unittest.TestCase):
                                 <img src="file://%s"><br>
                                 <img src="file://%s">
                             <body>
-                        </html>""" % (goldenpath, actual.name))
+                        </html>""" % (example_img, actual.name))
                     self.fail(
                         "images for %s differ:\n%s\nview with:\npython -m webbrowser %s"
                         % (file_name, diff, html.name))
@@ -84,6 +91,11 @@ class TestPybadges2Badge(unittest.TestCase):
 
 class TestEmbedImage(unittest.TestCase):
     """Tests for pybadges2._embed_image."""
+
+    @classmethod
+    def setUpClass(cls: type[unittest.TestCase]) -> None:
+        test_dir = Path(__file__).parent
+        cls.dataset = test_dir / 'assets'
 
     def test_data_url(self):
         url = 'data:image/png;base64,' + PNG_IMAGE_B64
@@ -101,8 +113,7 @@ class TestEmbedImage(unittest.TestCase):
 
     @unittest.skipIf(sys.platform.startswith("win"), "requires Unix filesystem")
     def test_svg_file_path(self):
-        image_path = os.path.abspath(
-            os.path.join(TEST_DIR, 'golden-images', 'build-failure.svg'))
+        image_path = self.dataset / 'golden-images' / 'build-failure.svg'
         self.assertRegex(pybadges2._embed_image(image_path),
                          r'^data:image/svg(\+xml)?;base64,')
 
@@ -133,8 +144,7 @@ class TestEmbedImage(unittest.TestCase):
                 pybadges2._embed_image(non_image.name)
 
     def test_file_url(self):
-        image_path = os.path.abspath(
-            os.path.join(TEST_DIR, 'golden-images', 'build-failure.svg'))
+        image_path = self.dataset / 'golden-images' / 'build-failure.svg'
 
         with self.assertRaisesRegex(ValueError, 'unsupported scheme "file"'):
             pybadges2._embed_image(pathlib.Path(image_path).as_uri())

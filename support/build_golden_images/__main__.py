@@ -31,18 +31,19 @@ def generate_images(source_json_path, target_directory):
 
 def main():
     root_dir = Path(__file__).parent.parent.parent
+    test_assets_dir = root_dir / 'tests' / 'assets'
     
     parser = argparse.ArgumentParser(
         description='generate a github-style badge given some text and colors')
 
     parser.add_argument(
         '--source-path',
-        default=root_dir / 'tests' / 'test-badges.json',
+        default=test_assets_dir / 'test-badges.json',
         help='the text to show on the left-hand-side of the badge')
 
     parser.add_argument(
         '--destination-dir',
-        default=root_dir / 'tests' / 'golden-images',
+        default=test_assets_dir / 'golden-images',
         help='the text to show on the left-hand-side of the badge')
     args = parser.parse_args()
     generate_images(args.source_path, args.destination_dir)
