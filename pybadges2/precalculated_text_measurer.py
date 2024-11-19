@@ -10,6 +10,7 @@ from pybadges2 import text_measurer
 from typing import Mapping
 from typing import TextIO
 import json
+import lzma
 
 
 class PrecalculatedTextMeasurer(text_measurer.TextMeasurer):
@@ -63,8 +64,15 @@ class PrecalculatedTextMeasurer(text_measurer.TextMeasurer):
             return cls._default_cache
 
         module_dir = Path(__file__).parent
-        default_widths = module_dir / 'default-widths.json'
 
-        with default_widths.open(encoding='utf-8') as f:
-            cls._default_cache = PrecalculatedTextMeasurer.from_json(f)
-            return cls._default_cache
+        default_widths_xz = module_dir / 'default-widths.json.xz'
+        if default_widths_xz.is_file():
+            with default_widths_xz.open('rb') as f:
+                with lzma.open(f, 'rt') as g:
+                    cls._default_cache = PrecalculatedTextMeasurer.from_json(g)
+                    return cls._default_cache
+        else:
+            default_widths = module_dir / 'default-widths.json'
+            with default_widths.open(encoding='utf-8') as f:
+                cls._default_cache = PrecalculatedTextMeasurer.from_json(f)
+                return cls._default_cache
