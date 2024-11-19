@@ -5,12 +5,11 @@
 Uses a precalculated set of metrics to calculate the string length.
 """
 
-import io
-import json
 from pathlib import Path
-from typing import cast, Mapping, TextIO, Type
-
 from pybadges2 import text_measurer
+from typing import Mapping
+from typing import TextIO
+import json
 
 
 class PrecalculatedTextMeasurer(text_measurer.TextMeasurer):

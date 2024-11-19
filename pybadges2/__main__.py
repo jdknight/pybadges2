@@ -6,14 +6,12 @@ For more information, run:
 $ python3 -m pybadges2 --help
 """
 
+from pybadges2 import pil_text_measurer
+from pybadges2.version import __version__
 import argparse
 import sys
 import tempfile
 import webbrowser
-
-sys.path.append('/home/nick/git/pybadges2/')
-import pybadges2
-from pybadges2.version import __version__
 
 
 def main():
@@ -161,7 +159,6 @@ def main():
                   '--deja-vu-sans-path',
                   file=sys.stderr)
             sys.exit(1)
-        from pybadges2 import pil_text_measurer
         measurer = pil_text_measurer.PilMeasurer(args.deja_vu_sans_path)
 
     badge = pybadges2.badge(left_text=args.left_text,

@@ -18,19 +18,17 @@ gh-badges library
 '<svg...</svg>'
 """
 
-import base64
-import mimetypes
-from typing import Optional
-import urllib.parse
-from xml.dom import minidom
-
-import jinja2
-import requests
-
-from pybadges2.detect_image_type import detect_image_type
-from pybadges2 import text_measurer
 from pybadges2 import precalculated_text_measurer
+from pybadges2 import text_measurer
+from pybadges2.detect_image_type import detect_image_type
 from pybadges2.version import __version__
+from typing import Optional
+from xml.dom import minidom
+import base64
+import jinja2
+import mimetypes
+import requests
+import urllib.parse
 
 _JINJA2_ENVIRONMENT = jinja2.Environment(
     trim_blocks=True,

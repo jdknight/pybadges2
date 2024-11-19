@@ -6,7 +6,6 @@ Uses a PIL/Pillow to determine the string length.
 """
 
 from PIL import ImageFont
-
 from pybadges2 import text_measurer
 
 

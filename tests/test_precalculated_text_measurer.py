@@ -2,9 +2,8 @@
 # SPDX-License-Identifier: Apache-2.0
 """Tests for PrecalculatedTextMeasurer."""
 
-import unittest
-
 from pybadges2 import precalculated_text_measurer
+import unittest
 
 
 class TestPrecalculatedTextMeasurer(unittest.TestCase):

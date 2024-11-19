@@ -2,18 +2,17 @@
 # SPDX-License-Identifier: Apache-2.0
 """Tests for pybadges2."""
 
+from tests import image_server
 import base64
 import doctest
 import json
 import os.path
 import pathlib
+import pybadges2
 import sys
 import tempfile
 import unittest
 import xmldiff.main
-
-import pybadges2
-from tests import image_server
 
 TEST_DIR = os.path.dirname(__file__)
 

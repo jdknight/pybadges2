@@ -2,14 +2,13 @@
 # SPDX-License-Identifier: Apache-2.0
 
 from pathlib import Path
+from tests import image_server
+from tests import test_pybadges
 import argparse
 import json
 import os
 import os.path
-
 import pybadges2
-from tests import image_server
-from tests import test_pybadges
 
 
 def generate_images(source_json_path, target_directory):

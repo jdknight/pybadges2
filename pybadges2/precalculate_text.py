@@ -29,17 +29,17 @@ For information about the commands, run:
 $ python3 - m pybadges2.precalculate_text --help
 """
 
+from fontTools import ttLib
+from pybadges2 import pil_text_measurer
+from pybadges2 import text_measurer
+from typing import Iterable
+from typing import Mapping
+from typing import TextIO
 import argparse
 import itertools
 import json
 import os.path
 import statistics
-from typing import Iterable, Mapping, TextIO
-
-from fontTools import ttLib
-
-from pybadges2 import pil_text_measurer
-from pybadges2 import text_measurer
 
 
 def generate_supported_characters(deja_vu_sans_path: str) -> Iterable[str]:
