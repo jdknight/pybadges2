@@ -7,7 +7,7 @@ Uses a precalculated set of metrics to calculate the string length.
 
 import io
 import json
-import pkg_resources
+from pathlib import Path
 from typing import cast, Mapping, TextIO, Type
 
 from pybadges2 import text_measurer
@@ -63,19 +63,9 @@ class PrecalculatedTextMeasurer(text_measurer.TextMeasurer):
         if cls._default_cache is not None:
             return cls._default_cache
 
-        if pkg_resources.resource_exists(__name__, 'default-widths.json.xz'):
-            import lzma
-            with pkg_resources.resource_stream(__name__,
-                                               'default-widths.json.xz') as f:
-                with lzma.open(f, "rt") as g:
-                    cls._default_cache = PrecalculatedTextMeasurer.from_json(
-                        cast(TextIO, g))
-                    return cls._default_cache
-        elif pkg_resources.resource_exists(__name__, 'default-widths.json'):
-            with pkg_resources.resource_stream(__name__,
-                                               'default-widths.json') as f:
-                cls._default_cache = PrecalculatedTextMeasurer.from_json(
-                    io.TextIOWrapper(f, encoding='utf-8'))
-                return cls._default_cache
-        else:
-            raise ValueError('could not load default-widths.json')
+        module_dir = Path(__file__).parent
+        default_widths = module_dir / 'default-widths.json'
+
+        with default_widths.open(encoding='utf-8') as f:
+            cls._default_cache = PrecalculatedTextMeasurer.from_json(f)
+            return cls._default_cache
