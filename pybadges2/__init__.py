@@ -78,14 +78,16 @@ def _embed_image(url: str) -> str:
         r.raise_for_status()
         content_type = r.headers.get('content-type')
         if content_type is None:
-            raise ValueError('no "Content-Type" header')
+            msg = 'no "Content-Type" header'
+            raise ValueError(msg)
         content_type, image_type = content_type.split('/')
         if content_type != 'image':
-            raise ValueError(
-                'expected an image, got "{0}"'.format(content_type))
+            msg = f'expected an image, got "{content_type}"'
+            raise ValueError(msg)
         image_data = r.content
     elif parsed_url.scheme:
-        raise ValueError('unsupported scheme "{0}"'.format(parsed_url.scheme))
+        msg = f'unsupported scheme "{parsed_url.scheme}"'
+        raise ValueError(msg)
     else:
         with open(url, 'rb') as f:
             image_data = f.read()
@@ -93,12 +95,14 @@ def _embed_image(url: str) -> str:
         if not image_type:
             mime_type, _ = mimetypes.guess_type(url, strict=False)
             if not mime_type:
-                raise ValueError('not able to determine file type')
+                msg = 'not able to determine file type'
+                raise ValueError(msg)
             else:
                 content_type, image_type = mime_type.split('/')
                 if content_type != 'image':
-                    raise ValueError('expected an image, got "{0}"'.format(
-                        content_type or 'unknown'))
+                    desc = content_type or 'unknown'
+                    msg = f'expected an image, got "{desc}"'
+                    raise ValueError(msg)
 
     encoded_image = base64.b64encode(image_data).decode('ascii')
     return 'data:image/{};base64,{}'.format(image_type, encoded_image)
@@ -182,16 +186,17 @@ def badge(
             precalculated_text_measurer.PrecalculatedTextMeasurer.default())
 
     if (left_link or right_link or center_link) and whole_link:
-        raise ValueError(
-            'whole_link may not bet set with left_link, right_link, or center_link'
-        )
+        msg = 'whole_link may not bet set with left_link, right_link, or center_link'
+        raise ValueError(msg)
 
     if center_image and not (right_image or right_text):
-        raise ValueError('cannot have a center_image without a right element')
+        msg = 'cannot have a center_image without a right element'
+        raise ValueError(msg)
 
     if (center_image and not center_color) or (not center_image and
                                                center_color):
-        raise ValueError('must have both a center_image and a center_color')
+        msg = 'must have both a center_image and a center_color'
+        raise ValueError(msg)
 
     if logo and embed_logo:
         logo = _embed_image(logo)
