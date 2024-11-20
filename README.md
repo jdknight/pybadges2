@@ -14,9 +14,9 @@ pybadges2 is a Python library and command line tool that allows you to create
 Github-style badges as SVG images. For example:
 
 <p align="center">
-    <img src="https://raw.githubusercontent.com/jdknight/pybadges2/refs/heads/main/tests/golden-images/pip.svg" />
-    <img src="https://raw.githubusercontent.com/jdknight/pybadges2/refs/heads/main/tests/golden-images/license.svg" />
-    <img src="https://raw.githubusercontent.com/jdknight/pybadges2/refs/heads/main/tests/golden-images/build-passing.svg" />
+    <img src="https://raw.githubusercontent.com/jdknight/pybadges2/refs/heads/main/tests/assets/golden-images/pip.svg" />
+    <img src="https://raw.githubusercontent.com/jdknight/pybadges2/refs/heads/main/tests/assets/golden-images/license.svg" />
+    <img src="https://raw.githubusercontent.com/jdknight/pybadges2/refs/heads/main/tests/assets/golden-images/build-passing.svg" />
 </p>
 
 The aesthetics of the generated badges matches the visual design found in this
@@ -43,7 +43,7 @@ python -m pybadges --left-text=build --right-text=failure --right-color='#c00' -
 
 You will see a badge like this in your browser:
 
-![pip installation](https://raw.githubusercontent.com/jdknight/pybadges2/refs/heads/main/tests/golden-images/build-failure.svg)
+![pip installation](https://raw.githubusercontent.com/jdknight/pybadges2/refs/heads/main/tests/assets/golden-images/build-failure.svg)
 
 ## Usage
 
@@ -83,7 +83,7 @@ pybadges2 \
     --browser
 ```
 
-![pip installation](https://raw.githubusercontent.com/jdknight/pybadges2/refs/heads/main/tests/golden-images/complete.svg)
+![pip installation](https://raw.githubusercontent.com/jdknight/pybadges2/refs/heads/main/tests/assets/golden-images/complete.svg)
 
 #### A note about `--logo` and `--embed-logo`
 
@@ -98,7 +98,7 @@ pybadges2 \
     --logo='https://dev.w3.org/SVG/tools/svgweb/samples/svg-files/python.svg'
 ```
 
-![pip installation](https://raw.githubusercontent.com/jdknight/pybadges2/refs/heads/main/tests/golden-images/python.svg)
+![pip installation](https://raw.githubusercontent.com/jdknight/pybadges2/refs/heads/main/tests/assets/golden-images/python.svg)
 
 If the `--logo` option is set, the `--embed-logo` option can also be set.
 The `--embed-logo` option causes the content of the URL provided in `--logo`
@@ -110,8 +110,8 @@ references at all.
 
 You can see the difference in your browser:
 
-![--embed-logo=yes](https://raw.githubusercontent.com/jdknight/pybadges2/refs/heads/main/tests/golden-images/embedded-logo.svg)
-![--embed-logo=no](https://raw.githubusercontent.com/jdknight/pybadges2/refs/heads/main/tests/golden-images/no-embedded-logo.svg)
+![--embed-logo=yes](https://raw.githubusercontent.com/jdknight/pybadges2/refs/heads/main/tests/assets/golden-images/embedded-logo.svg)
+![--embed-logo=no](https://raw.githubusercontent.com/jdknight/pybadges2/refs/heads/main/tests/assets/golden-images/no-embedded-logo.svg)
 
 #### A note about `--(whole|left|right)-title`
 
@@ -147,18 +147,18 @@ contains an example of serving badge images from a [Flask server][flask].
   distances (for Western glyphs) to determine the size of the badge. Eastern
   European languages may be rendered less well than Western European ones:
 
-  ![pip installation](https://raw.githubusercontent.com/jdknight/pybadges2/refs/heads/main/tests/golden-images/saying-russian.svg)
+  ![pip installation](https://raw.githubusercontent.com/jdknight/pybadges2/refs/heads/main/tests/assets/golden-images/saying-russian.svg)
 
   And glyphs not present in Deja Vu Sans (the default font) may be rendered
   very poorly:
 
-  ![pip installation](https://raw.githubusercontent.com/jdknight/pybadges2/refs/heads/main/tests/golden-images/saying-chinese.svg)
+  ![pip installation](https://raw.githubusercontent.com/jdknight/pybadges2/refs/heads/main/tests/assets/golden-images/saying-chinese.svg)
 
 - pybadges2 does not have any explicit support for languages that are
   written right-to-left (e.g. Arabic, Hebrew) and the displayed text
   direction may be incorrect:
 
-  ![pip installation](https://raw.githubusercontent.com/jdknight/pybadges2/refs/heads/main/tests/golden-images/saying-arabic.svg)
+  ![pip installation](https://raw.githubusercontent.com/jdknight/pybadges2/refs/heads/main/tests/assets/golden-images/saying-arabic.svg)
 
 ## Development
 
