@@ -1,4 +1,5 @@
 # Copyright 2022 The pybadge Authors
+# Copyright pybadge2 Authors
 # SPDX-License-Identifier: Apache-2.0
 """An HTTP image server that can be used to set logo embedding.
 
