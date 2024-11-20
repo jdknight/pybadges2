@@ -23,67 +23,20 @@ gh-badges library
 """
 
 from __future__ import annotations
-from pathlib import Path
 from pybadges2 import precalculated_text_measurer
 from pybadges2 import text_measurer
-from pybadges2.detect_image_type import detect_image_type
+from pybadges2.embed_image import embed_image
 from pybadges2.util import name2color
 from pybadges2.util import remove_xml_blanks
 from pybadges2.version import __version__  # noqa: F401
 from xml.dom import minidom
-import base64
 import jinja2
-import mimetypes
-import requests
-import urllib.parse
 
 _JINJA2_ENVIRONMENT = jinja2.Environment(
     trim_blocks=True,
     lstrip_blocks=True,
     loader=jinja2.PackageLoader('pybadges2', '.'),
     autoescape=jinja2.select_autoescape(['svg']))
-
-
-def _embed_image(url: str) -> str:
-    parsed_url = urllib.parse.urlparse(url)
-
-    if parsed_url.scheme == 'data':
-        return url
-
-    if parsed_url.scheme.startswith('http'):
-        interim_timeout = 60
-        r = requests.get(url, timeout=interim_timeout)
-        r.raise_for_status()
-        content_type = r.headers.get('content-type')
-        if content_type is None:
-            msg = 'no "Content-Type" header'
-            raise ValueError(msg)
-        content_type, image_type = content_type.split('/')
-        if content_type != 'image':
-            msg = f'expected an image, got "{content_type}"'
-            raise ValueError(msg)
-        image_data = r.content
-    elif parsed_url.scheme:
-        msg = f'unsupported scheme "{parsed_url.scheme}"'
-        raise ValueError(msg)
-    else:
-        with Path(url).open('rb') as f:
-            image_data = f.read()
-        image_type = detect_image_type(image_data)
-        if not image_type:
-            mime_type, _ = mimetypes.guess_type(url, strict=False)
-            if not mime_type:
-                msg = 'not able to determine file type'
-                raise ValueError(msg)
-
-            content_type, image_type = mime_type.split('/')
-            if content_type != 'image':
-                desc = content_type or 'unknown'
-                msg = f'expected an image, got "{desc}"'
-                raise ValueError(msg)
-
-    encoded_image = base64.b64encode(image_data).decode('ascii')
-    return f'data:image/{image_type};base64,{encoded_image}'
 
 
 def badge(
@@ -178,13 +131,13 @@ def badge(
         raise ValueError(msg)
 
     if logo and embed_logo:
-        logo = _embed_image(logo)
+        logo = embed_image(logo)
 
     if right_image and embed_right_image:
-        right_image = _embed_image(right_image)
+        right_image = embed_image(right_image)
 
     if center_image and embed_center_image:
-        center_image = _embed_image(center_image)
+        center_image = embed_image(center_image)
 
     if center_color:
         center_color = name2color(center_color)

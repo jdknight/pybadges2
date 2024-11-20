@@ -5,6 +5,7 @@
 
 from __future__ import annotations
 from pathlib import Path
+from pybadges2.embed_image import embed_image
 from tests import image_server
 import base64
 import doctest
@@ -91,7 +92,7 @@ class TestPybadges2Badge(unittest.TestCase):
 
 
 class TestEmbedImage(unittest.TestCase):
-    """Tests for pybadges2._embed_image."""
+    """Tests for embed_image."""
 
     @classmethod
     def setUpClass(cls: type[unittest.TestCase]) -> None:
@@ -100,22 +101,22 @@ class TestEmbedImage(unittest.TestCase):
 
     def test_data_url(self) -> None:
         url = 'data:image/png;base64,' + PNG_IMAGE_B64
-        self.assertEqual(url, pybadges2._embed_image(url))
+        self.assertEqual(url, embed_image(url))
 
     def test_http_url(self) -> None:
         url = 'https://dev.w3.org/SVG/tools/svgweb/samples/svg-files/python.svg'
-        self.assertRegex(pybadges2._embed_image(url),
+        self.assertRegex(embed_image(url),
                          r'^data:image/svg(\+xml)?;base64,')
 
     def test_not_image_url(self) -> None:
         with self.assertRaisesRegex(ValueError,
                                     'expected an image, got "text"'):
-            pybadges2._embed_image('http://www.google.com/')
+            embed_image('http://www.google.com/')
 
     @unittest.skipIf(sys.platform.startswith("win"), "requires Unix filesystem")
     def test_svg_file_path(self) -> None:
         image_path = self.dataset / 'golden-images' / 'build-failure.svg'
-        self.assertRegex(pybadges2._embed_image(image_path),
+        self.assertRegex(embed_image(image_path),
                          r'^data:image/svg(\+xml)?;base64,')
 
     @unittest.skipIf(sys.platform.startswith("win"), "requires Unix filesystem")
@@ -123,7 +124,7 @@ class TestEmbedImage(unittest.TestCase):
         with tempfile.NamedTemporaryFile() as png:
             png.write(PNG_IMAGE)
             png.flush()
-            self.assertEqual(pybadges2._embed_image(png.name),
+            self.assertEqual(embed_image(png.name),
                              'data:image/png;base64,' + PNG_IMAGE_B64)
 
     @unittest.skipIf(sys.platform.startswith("win"), "requires Unix filesystem")
@@ -133,7 +134,7 @@ class TestEmbedImage(unittest.TestCase):
             non_image.flush()
             with self.assertRaisesRegex(ValueError,
                                         'not able to determine file type'):
-                pybadges2._embed_image(non_image.name)
+                embed_image(non_image.name)
 
     @unittest.skipIf(sys.platform.startswith("win"), "requires Unix filesystem")
     def test_text_file_path(self) -> None:
@@ -142,13 +143,13 @@ class TestEmbedImage(unittest.TestCase):
             non_image.flush()
             with self.assertRaisesRegex(ValueError,
                                         'expected an image, got "text"'):
-                pybadges2._embed_image(non_image.name)
+                embed_image(non_image.name)
 
     def test_file_url(self) -> None:
         image_path = self.dataset / 'golden-images' / 'build-failure.svg'
 
         with self.assertRaisesRegex(ValueError, 'unsupported scheme "file"'):
-            pybadges2._embed_image(pathlib.Path(image_path).as_uri())
+            embed_image(pathlib.Path(image_path).as_uri())
 
 
 if __name__ == '__main__':
