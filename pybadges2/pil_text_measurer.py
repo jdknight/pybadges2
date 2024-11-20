@@ -23,5 +23,8 @@ class PilMeasurer(text_measurer.TextMeasurer):
 
     def text_width(self, text: str) -> float:
         """Returns the width, in pixels, of a string in DejaVu Sans 110pt."""
-        width, _ = self._font.getsize(text)
+        try:
+            width = self._font.getlength(text)
+        except AttributeError:
+            width, _ = self._font.getsize(text)  # pylint: disable=E1101
         return width
