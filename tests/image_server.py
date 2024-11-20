@@ -12,29 +12,29 @@ import threading
 
 class ImageServer:
 
-    def __init__(self, image_data):
+    def __init__(self, image_data: bytes) -> None:
         self._image_data = image_data
 
-    def start_server(self):
+    def start_server(self) -> None:
         srv = self
 
         class Handler(server.BaseHTTPRequestHandler):
 
-            def do_GET(self):
+            def do_GET(self) -> None:  # noqa: N802
                 self.send_response(200)
                 self.send_header('Content-Type', 'image/png')
                 self.end_headers()
                 self.wfile.write(srv._image_data)
 
         self._httpd = server.HTTPServer(('localhost', 0), Handler)
-        self.logo_url = "http://localhost:{0}".format(self._httpd.server_port)
+        self.logo_url = f"http://localhost:{self._httpd.server_port}"
 
         thread = threading.Thread(target=self._httpd.serve_forever)
         thread.start()
 
-    def fix_embedded_url_reference(self, example):
+    def fix_embedded_url_reference(self, example: dict) -> None:
         if example.get("logo") == "<embedded>":
             example["logo"] = self.logo_url
 
-    def stop_server(self):
+    def stop_server(self) -> None:
         self._httpd.shutdown()

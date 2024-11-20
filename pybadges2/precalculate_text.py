@@ -30,7 +30,7 @@ For information about the commands, run:
 $ python3 - m pybadges2.precalculate_text --help
 """
 
-from fontTools import ttLib
+from fontTools import ttLib  # pylint: disable=E0401
 from pathlib import Path
 from pybadges2 import pil_text_measurer
 from pybadges2 import text_measurer
