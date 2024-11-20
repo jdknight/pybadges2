@@ -116,7 +116,7 @@ class TestEmbedImage(unittest.TestCase):
     @unittest.skipIf(sys.platform.startswith("win"), "requires Unix filesystem")
     def test_svg_file_path(self) -> None:
         image_path = self.dataset / 'golden-images' / 'build-failure.svg'
-        self.assertRegex(embed_image(image_path),
+        self.assertRegex(embed_image(str(image_path)),
                          r'^data:image/svg(\+xml)?;base64,')
 
     @unittest.skipIf(sys.platform.startswith("win"), "requires Unix filesystem")
@@ -149,7 +149,7 @@ class TestEmbedImage(unittest.TestCase):
         image_path = self.dataset / 'golden-images' / 'build-failure.svg'
 
         with self.assertRaisesRegex(ValueError, 'unsupported scheme "file"'):
-            embed_image(pathlib.Path(image_path).as_uri())
+            embed_image(Path(image_path).as_uri())
 
 
 if __name__ == '__main__':
