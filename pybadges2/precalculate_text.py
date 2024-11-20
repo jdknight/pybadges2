@@ -186,7 +186,7 @@ def main() -> None:
     measurer = pil_text_measurer.PilMeasurer(args.deja_vu_sans_path)
 
     def create_file() -> TextIO:
-        if args.output_json_file.endswith('.xz'):
+        if args.output_json_file.suffix == '.xz':
             return lzma.open(args.output_json_file, 'wt')
 
         return args.output_json_file.open('wt')
