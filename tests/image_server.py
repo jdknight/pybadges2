@@ -25,7 +25,7 @@ class ImageServer:
                 self.send_response(200)
                 self.send_header('Content-Type', 'image/png')
                 self.end_headers()
-                self.wfile.write(srv._image_data)
+                self.wfile.write(srv._image_data)  # noqa: SLF001
 
         self._httpd = server.HTTPServer(('localhost', 0), Handler)
         self.logo_url = f"http://localhost:{self._httpd.server_port}"
