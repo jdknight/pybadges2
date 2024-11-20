@@ -5,6 +5,9 @@
 # Use the same color scheme as describe in:
 # https://github.com/badges/shields/blob/5cdef88bcc65da9dbb1f85f7e987f1148c4ae757/badge-maker/lib/color.js#L6
 
+from xml.dom import minidom
+
+
 _NAME_TO_COLOR = {
     'brightgreen': '#4c1',
     'green': '#97CA00',
@@ -27,3 +30,12 @@ _NAME_TO_COLOR = {
 
 def name2color(color: str) -> str:
     return _NAME_TO_COLOR.get(color, color)
+
+
+def remove_xml_blanks(node: minidom.Node) -> None:
+    for x in node.childNodes:
+        if x.nodeType == minidom.Node.TEXT_NODE:
+            if x.nodeValue:
+                x.nodeValue = x.nodeValue.strip()
+        elif x.nodeType == minidom.Node.ELEMENT_NODE:
+            remove_xml_blanks(x)

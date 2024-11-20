@@ -28,6 +28,7 @@ from pybadges2 import precalculated_text_measurer
 from pybadges2 import text_measurer
 from pybadges2.detect_image_type import detect_image_type
 from pybadges2.util import name2color
+from pybadges2.util import remove_xml_blanks
 from pybadges2.version import __version__  # noqa: F401
 from xml.dom import minidom
 import base64
@@ -41,15 +42,6 @@ _JINJA2_ENVIRONMENT = jinja2.Environment(
     lstrip_blocks=True,
     loader=jinja2.PackageLoader('pybadges2', '.'),
     autoescape=jinja2.select_autoescape(['svg']))
-
-
-def _remove_blanks(node: minidom.Node) -> None:
-    for x in node.childNodes:
-        if x.nodeType == minidom.Node.TEXT_NODE:
-            if x.nodeValue:
-                x.nodeValue = x.nodeValue.strip()
-        elif x.nodeType == minidom.Node.ELEMENT_NODE:
-            _remove_blanks(x)
 
 
 def _embed_image(url: str) -> str:
@@ -225,6 +217,6 @@ def badge(
         id_suffix=id_suffix,
     )
     xml = minidom.parseString(svg)  # noqa: S318
-    _remove_blanks(xml)
+    remove_xml_blanks(xml)
     xml.normalize()
     return xml.documentElement.toxml()
