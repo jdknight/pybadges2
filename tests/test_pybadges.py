@@ -10,7 +10,6 @@ from tests import image_server
 import base64
 import doctest
 import json
-import pathlib
 import pybadges2
 import sys
 import tempfile
