@@ -6,8 +6,8 @@
 
 > [!IMPORTANT]
 > The pybadges2 is a new release (end of 2024) based on the original
-> [pybadges][pybadges] repository. The primarily goal is to support the
-> maintenace of this library/utility (since upstream maintenances appears
+> [pybadges][pybadges] repository. The primary goal is to support the
+> maintenace of this library/utility (since upstream maintenance appears
 > to have paused).
 
 pybadges2 is a Python library and command line tool that allows you to create
