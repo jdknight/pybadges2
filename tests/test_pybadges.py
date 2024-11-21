@@ -112,43 +112,45 @@ class TestEmbedImage(unittest.TestCase):
                                     'expected an image, got "text"'):
             embed_image('http://www.google.com/')
 
-    @unittest.skipIf(sys.platform.startswith("win"), "requires Unix filesystem")
     def test_svg_file_path(self) -> None:
         image_path = self.dataset / 'golden-images' / 'build-failure.svg'
-        self.assertRegex(embed_image(str(image_path)),
+        self.assertRegex(embed_image(image_path),
                          r'^data:image/svg(\+xml)?;base64,')
 
-    @unittest.skipIf(sys.platform.startswith("win"), "requires Unix filesystem")
     def test_png_file_path(self) -> None:
-        with tempfile.NamedTemporaryFile() as png:
-            png.write(PNG_IMAGE)
-            png.flush()
-            self.assertEqual(embed_image(png.name),
+        with tempfile.TemporaryDirectory() as work_dir:
+            tmpfile = Path(work_dir) / 'test.png'
+            with tmpfile.open('wb') as f:
+                f.write(PNG_IMAGE)
+
+            self.assertEqual(embed_image(tmpfile),
                              'data:image/png;base64,' + PNG_IMAGE_B64)
 
-    @unittest.skipIf(sys.platform.startswith("win"), "requires Unix filesystem")
     def test_unknown_type_file_path(self) -> None:
-        with tempfile.NamedTemporaryFile() as non_image:
-            non_image.write(b'Hello')
-            non_image.flush()
+        with tempfile.TemporaryDirectory() as work_dir:
+            tmpfile = Path(work_dir) / 'unknown'
+            with tmpfile.open('wb') as f:
+                f.write(b'Hello')
+
             with self.assertRaisesRegex(ValueError,
                                         'not able to determine file type'):
-                embed_image(non_image.name)
+                embed_image(tmpfile)
 
-    @unittest.skipIf(sys.platform.startswith("win"), "requires Unix filesystem")
     def test_text_file_path(self) -> None:
-        with tempfile.NamedTemporaryFile(suffix='.txt') as non_image:
-            non_image.write(b'Hello')
-            non_image.flush()
+        with tempfile.TemporaryDirectory() as work_dir:
+            tmpfile = Path(work_dir) / 'test.txt'
+            with tmpfile.open('wb') as f:
+                f.write(b'Hello')
+
             with self.assertRaisesRegex(ValueError,
                                         'expected an image, got "text"'):
-                embed_image(non_image.name)
+                embed_image(tmpfile)
 
+    @unittest.skipIf(sys.version_info<(3, 13, 0), 'requires python v3.13+')
     def test_file_url(self) -> None:
         image_path = self.dataset / 'golden-images' / 'build-failure.svg'
-
-        with self.assertRaisesRegex(ValueError, 'unsupported scheme "file"'):
-            embed_image(Path(image_path).as_uri())
+        self.assertRegex(embed_image(Path(image_path).as_uri()),
+                         r'^data:image/svg(\+xml)?;base64,')
 
 
 if __name__ == '__main__':
