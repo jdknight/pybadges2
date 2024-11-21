@@ -5,6 +5,7 @@
 # Use the same color scheme as describe in:
 # https://github.com/badges/shields/blob/5cdef88bcc65da9dbb1f85f7e987f1148c4ae757/badge-maker/lib/color.js#L6
 
+from __future__ import annotations
 from pathlib import Path
 from pybadges2.detect_image_type import detect_image_type
 import base64
@@ -12,16 +13,19 @@ import mimetypes
 import requests
 import urllib.parse
 
+# default timeout (in seconds)
+DEFAULT_TIMEOUT = 10
 
-def embed_image(url: str) -> str:
+
+def embed_image(url: str, http_timeout: int | None = None) -> str:
     parsed_url = urllib.parse.urlparse(url)
 
     if parsed_url.scheme == 'data':
         return url
 
     if parsed_url.scheme.startswith('http'):
-        interim_timeout = 60
-        r = requests.get(url, timeout=interim_timeout)
+        timeout = http_timeout if http_timeout else DEFAULT_TIMEOUT
+        r = requests.get(url, timeout=timeout)
         r.raise_for_status()
         content_type = r.headers.get('content-type')
         if content_type is None:

@@ -58,6 +58,7 @@ def badge(
     right_image: str | None = None,
     center_image: str | None = None,
     embed_logo: bool = False,
+    embed_timeout: int | None = None,
     embed_right_image: bool = False,
     embed_center_image: bool = False,
     id_suffix: str = '',
@@ -100,6 +101,7 @@ def badge(
             external image referenced. When True, `logo` must be a HTTP/HTTPS
             URI or a filesystem path. Also, the `badge` call may raise an
             exception if the logo cannot be loaded, is not an image, etc.
+        embed_timeout: Timeout for any request to fetch logo to embed.
         whole_title: The title attribute to associate with the entire badge.
             See https://developer.mozilla.org/en-US/docs/Web/SVG/Element/title.
         left_title: The title attribute to associate with the left part of the
@@ -130,13 +132,13 @@ def badge(
         raise ValueError(msg)
 
     if logo and embed_logo:
-        logo = embed_image(logo)
+        logo = embed_image(logo, http_timeout=embed_timeout)
 
     if right_image and embed_right_image:
-        right_image = embed_image(right_image)
+        right_image = embed_image(right_image, http_timeout=embed_timeout)
 
     if center_image and embed_center_image:
-        center_image = embed_image(center_image)
+        center_image = embed_image(center_image, http_timeout=embed_timeout)
 
     if center_color:
         center_color = name2color(center_color)

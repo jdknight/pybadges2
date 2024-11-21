@@ -120,6 +120,12 @@ def main() -> None:
         'fact that some browsers do not fetch external image references); '
         'only works if --logo is a HTTP/HTTPS URI or a file path')
     parser.add_argument(
+        '--embed-timeout',
+        nargs='?',
+        type=int,
+        help='if the logo is specified then this value will be used to '
+        'control the timeout of a URL fetch')
+    parser.add_argument(
         '--embed-right-image',
         nargs='?',
         type=lambda x: x.lower() in ['y', 'yes', 't', 'true', '1', ''],
@@ -183,6 +189,7 @@ def main() -> None:
         right_image=args.right_image,
         center_image=args.center_image,
         embed_logo=args.embed_logo,
+        embed_timeout=args.embed_timeout,
         embed_right_image=args.embed_right_image,
         embed_center_image=args.embed_center_image,
     )
