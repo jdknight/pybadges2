@@ -8,6 +8,7 @@
 from __future__ import annotations
 from pathlib import Path
 from pybadges2.detect_image_type import detect_image_type
+from pybadges2.version import __version__ as pybadges2_version
 import base64
 import mimetypes
 import requests
@@ -51,7 +52,13 @@ def embed_image(content: str | Path, http_timeout: int | None = None) -> str:
 
 def embed_image_from_url(url: str, timeout: int | None = None) -> str:
     to = timeout if timeout else DEFAULT_TIMEOUT
-    r = requests.get(url, timeout=to)
+    r = requests.get(
+        url,
+        headers={
+            'User-Agent': f'pybadges2/{pybadges2_version}',
+        },
+        timeout=to,
+    )
     r.raise_for_status()
 
     content_type = r.headers.get('content-type')
