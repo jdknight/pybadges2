@@ -29,16 +29,16 @@ The implementation of the library was heavily influenced by
 
 ### Installing
 
-pybadges can be installed using [pip][pip]:
+pybadges2 can be installed using [pip][pip]:
 
 ```sh
-pip install pybadges
+pip install pybadges2
 ```
 
 To test that installation was successful, try:
 
 ```sh
-python -m pybadges --left-text=build --right-text=failure --right-color='#c00' --browser
+python -m pybadges2 --left-text=build --right-text=failure --right-color='#c00' --browser
 ```
 
 You will see a badge like this in your browser:
